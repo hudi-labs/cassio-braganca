@@ -1,0 +1,439 @@
+/* =================================================================
+   Cássio Bragança Psicologia — Folha de Estilos (CSS3 puro)
+   -----------------------------------------------------------------
+   Organização do arquivo:
+     1. Variáveis globais (:root) — paleta de cores e tipografia
+     2. Reset e estilos base
+     3. Utilitários (container, botões)
+     4. Header (cabeçalho sticky)
+     5. Hero (apresentação)
+     6. Seções genéricas / cards
+     7. Seção de agendamento (calendar-container)
+     8. Footer (rodapé)
+     9. Botão flutuante do WhatsApp
+    10. Media Queries (Mobile-first → Desktop)
+   ================================================================= */
+
+/* =================================================================
+   1. VARIÁVEIS GLOBAIS — Identidade Visual e Psicologia das Cores
+   ================================================================= */
+:root {
+  /* Paleta de cores oficial */
+  --color-calm: #f4f4f2;        /* Warm Off-White — fundo principal (conforto)        */
+  --color-professional: #002e4f;/* Deep Navy — títulos, destaques e rodapé (seriedade)*/
+  --color-balance: #4682b4;     /* Steel Blue — bordas, divisórias, textos secundários*/
+  --color-empathy: #006d6b;     /* Teal Green — botões secundários, links, destaques  */
+  --color-inspiration: #b6e80a; /* Lime Green — APENAS Call to Action (WhatsApp/CTA)  */
+  --color-white: #ffffff;       /* Branco puro — fundo do container da agenda         */
+
+  /* Sombra suave baseada no Deep Navy em baixa opacidade */
+  --shadow-soft: 0 10px 30px rgba(0, 46, 79, 0.12);
+  --shadow-medium: 0 16px 40px rgba(0, 46, 79, 0.18);
+  /* Sombra verde para destacar o botão de ação (WhatsApp) */
+  --shadow-cta: 0 8px 24px rgba(182, 232, 10, 0.45);
+
+  /* Tipografia */
+  --font-title: "Lora", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Espaçamentos e medidas */
+  --radius: 16px;
+  --radius-sm: 10px;
+  --max-width: 1100px;
+  --header-height: 76px;
+}
+
+/* =================================================================
+   2. RESET E ESTILOS BASE
+   ================================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Compensa o header fixo ao ancorar nas seções */
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-calm);
+  color: var(--color-professional);
+  line-height: 1.65;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Títulos usam a serifada Lora para passar elegância clínica */
+h1,
+h2,
+h3 {
+  font-family: var(--font-title);
+  color: var(--color-professional);
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+a {
+  color: var(--color-empathy);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img,
+svg,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+
+/* =================================================================
+   3. UTILITÁRIOS — container e botões
+   ================================================================= */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Botão base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover {
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+/* Botão primário (CTA principal interno) — Lime Green para máxima atenção */
+.btn-primary {
+  background-color: var(--color-inspiration);
+  color: var(--color-professional);
+  box-shadow: var(--shadow-cta);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 12px 30px rgba(182, 232, 10, 0.6);
+}
+
+/* Botão secundário — Teal Green (empatia) */
+.btn-secondary {
+  background-color: var(--color-empathy);
+  color: var(--color-white);
+}
+
+.btn-secondary:hover {
+  background-color: #005856;
+}
+
+/* Botão de contorno sutil — usado no header */
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-professional);
+  border-color: var(--color-balance);
+  padding: 10px 18px;
+}
+
+.btn-outline:hover {
+  background-color: var(--color-professional);
+  color: var(--color-white);
+  border-color: var(--color-professional);
+}
+
+/* =================================================================
+   4. HEADER — cabeçalho fixo no topo (sticky)
+   ================================================================= */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(244, 244, 242, 0.92);
+  /* Leve desfoque para sofisticação ao rolar a página */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(70, 130, 180, 0.25); /* Steel Blue sutil */
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--header-height);
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.brand-name {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--color-professional);
+}
+
+.brand-subtitle {
+  font-size: 0.8rem;
+  color: var(--color-balance); /* Steel Blue — texto de suporte */
+  letter-spacing: 0.02em;
+}
+
+/* =================================================================
+   5. HERO — apresentação principal
+   ================================================================= */
+.hero {
+  padding: 72px 0 64px;
+  background-color: var(--color-calm);
+}
+
+.hero-inner {
+  max-width: 760px;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-empathy); /* Teal Green — destaque textual */
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-size: 2.1rem;
+  margin-bottom: 20px;
+}
+
+.hero-text {
+  font-size: 1.1rem;
+  color: #2c4456; /* Tom derivado do navy para corpo de texto suave */
+  margin-bottom: 32px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* =================================================================
+   6. SEÇÕES GENÉRICAS E CARDS
+   ================================================================= */
+.section {
+  padding: 64px 0;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.section-subtitle {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 40px;
+  color: var(--color-balance); /* Steel Blue — texto secundário */
+  font-size: 1.05rem;
+}
+
+/* Grid de cards (mobile-first: uma coluna) */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+.card {
+  background-color: var(--color-white);
+  border: 1px solid rgba(70, 130, 180, 0.25); /* Borda sutil Steel Blue */
+  border-radius: var(--radius);
+  padding: 28px 26px;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-medium);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  color: #43586a;
+}
+
+/* =================================================================
+   7. SEÇÃO DE AGENDAMENTO — calendar-container
+   Design sofisticado para "disfarçar" o visual padrão do Google.
+   ================================================================= */
+.scheduling {
+  background-color: var(--color-calm);
+}
+
+.calendar-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: var(--color-white); /* Fundo branco puro */
+  border-radius: var(--radius);
+  /* Sombra suave usando o Deep Navy em baixa opacidade */
+  box-shadow: var(--shadow-medium);
+  border: 1px solid rgba(70, 130, 180, 0.2);
+  padding: 12px;
+  overflow: hidden;
+}
+
+/* O iframe ocupa todo o container, sem bordas próprias */
+.calendar-container iframe {
+  width: 100%;
+  height: 600px;
+  border: 0;
+  border-radius: var(--radius-sm);
+}
+
+/* =================================================================
+   8. FOOTER — rodapé
+   ================================================================= */
+.site-footer {
+  background-color: var(--color-professional); /* Deep Navy */
+  color: var(--color-calm); /* Warm Off-White */
+  padding: 48px 0;
+  text-align: center;
+}
+
+.footer-name {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.footer-info {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  color: rgba(244, 244, 242, 0.85);
+}
+
+.footer-link {
+  color: var(--color-inspiration); /* Lime Green para o e-mail clicável */
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+.footer-copy {
+  margin-top: 18px;
+  font-size: 0.82rem;
+  color: rgba(244, 244, 242, 0.6);
+}
+
+/* =================================================================
+   9. BOTÃO FLUTUANTE DO WHATSAPP
+   Fixo no canto inferior direito, Lime Green com texto Deep Navy.
+   ================================================================= */
+.whatsapp-float {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 1100;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background-color: var(--color-inspiration); /* Lime Green obrigatório */
+  color: var(--color-professional); /* Texto/ícone em Deep Navy */
+  font-weight: 600;
+  border-radius: 50px;
+  box-shadow: var(--shadow-cta); /* Sombra verde para destacar a ação */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.whatsapp-float:hover {
+  text-decoration: none;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(182, 232, 10, 0.7);
+}
+
+.whatsapp-icon {
+  color: var(--color-professional);
+  flex-shrink: 0;
+}
+
+.whatsapp-text {
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+/* =================================================================
+   10. MEDIA QUERIES — Mobile-first → Tablet/Desktop
+   ================================================================= */
+
+/* Tablet (≥ 600px) */
+@media (min-width: 600px) {
+  .hero-title {
+    font-size: 2.6rem;
+  }
+
+  .section-title {
+    font-size: 2.1rem;
+  }
+}
+
+/* Desktop (≥ 768px) */
+@media (min-width: 768px) {
+  .hero {
+    padding: 100px 0 80px;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  /* Cards passam a três colunas */
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Telas pequenas: o botão do WhatsApp mostra apenas o ícone para
+   não ocupar espaço excessivo na tela. */
+@media (max-width: 420px) {
+  .whatsapp-text {
+    display: none;
+  }
+
+  .whatsapp-float {
+    padding: 14px;
+  }
+}
