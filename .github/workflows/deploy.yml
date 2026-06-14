@@ -1,0 +1,47 @@
+# Workflow de deploy do site estático para o GitHub Pages.
+# Qualquer push na branch "main" publica o site automaticamente.
+name: Deploy to GitHub Pages
+
+on:
+  # Publica a cada push na branch main
+  push:
+    branches: ["main"]
+  # Permite acionar o deploy manualmente pela aba "Actions"
+  workflow_dispatch:
+
+# Permissões necessárias para o deploy do GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Garante apenas um deploy concorrente, sem cancelar execuções em andamento
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Faz o checkout do repositório
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Configura o GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 3. Empacota todo o conteúdo do repositório como artefato do Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      # 4. Publica o artefato no GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
